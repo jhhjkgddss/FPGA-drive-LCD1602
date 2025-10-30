@@ -1,0 +1,3 @@
+Warning (10268): Verilog HDL information at lcd.v(293): always construct contains both blocking and non-blocking assignments File: F:/verilog/kecheng_project/LCD1602/lcd.v Line: 293
+Warning (10268): Verilog HDL information at lcd.v(328): always construct contains both blocking and non-blocking assignments File: F:/verilog/kecheng_project/LCD1602/lcd.v Line: 328
+Warning (10268): Verilog HDL information at lcd.v(364): always construct contains both blocking and non-blocking assignments File: F:/verilog/kecheng_project/LCD1602/lcd.v Line: 364

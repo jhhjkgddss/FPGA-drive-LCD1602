@@ -1,0 +1,206 @@
+module lcd(
+input				clk,
+input				rst_n,
+
+output	reg	rs,
+output	wire	rw,
+output	reg	en,
+output	reg	[7:0]	data	
+);
+	
+reg [17:0]cnt;
+reg [3:0]state_c;
+reg [3:0]state_n;
+reg [4:0]char_cnt;
+reg [7:0]display;
+
+localparam
+IDIE=4'd0,
+INIT=4'd1,
+S0=4'd2,
+S1=4'd3,
+S2=4'd4,
+S3=4'd5,
+ROW1=4'd6,
+WRITE=4'd7,
+ROW2=4'd8,
+STOP=4'd9;
+
+assign rw=1'b0;
+
+always@(posedge clk or negedge rst_n)		//1ms翻转一次
+begin
+if(!rst_n)
+	begin
+		cnt<=17'd0;
+	end
+else if(cnt==50_000-1)
+	begin
+		en<=~en;
+		cnt<=17'd0;
+	end
+else
+	begin
+		cnt<=cnt+1'b1;
+	end
+
+end
+
+
+always@(posedge clk or negedge rst_n)		//当初始化完成后控制写入字符的时间节拍
+begin
+if(!rst_n)
+	begin
+		cnt<=17'd0;
+	end
+else if(state_c==WRITE&&cnt==50_000-1)
+	begin
+		if(char_cnt==7)
+			begin
+				char_cnt<=5'd0;
+			end
+		else
+			begin
+				cnar_cnt<=cnar_cnt+1'b1;
+			end
+	end
+end
+
+
+always@(*)		//写入第一行字符的状态机
+begin
+	case(char_cnt)
+		5'd0:display<="2";
+		5'd1:display<="0";
+		5'd2:display<="2";
+		5'd3:display<="3";
+		5'd4:display<="5";
+		5'd5:display<="2";
+		5'd6:display<="3";
+		5'd7:display<="4";		
+		default:display<="P";
+	endcase
+end
+
+reg [19:0]cnt_15ms;
+reg flag_15ms;
+always@(posedge clk or negedge rst_n)		//在最开始时延时15ms，然后标志位变为1
+begin
+if(!rst_n)
+	begin
+		cnt_15ms<=20'd0;
+		flag_15ms<=0;
+	end
+else if(state_c==IDIE&&cnt_15ms==750_000)
+	begin
+		flag_15ms<=1;
+	end
+else	if(state_c==IDIE)
+	begin
+		cnt_15ms<=cnt_15ms+1'b1;
+	end
+	
+end
+
+always@(posedge clk or negedge rst_n)		//更新状态机的节拍
+begin
+if(!rst_n)
+	begin
+		state_c<=IDIE;
+	end
+else if(cnt==50_000-1)	
+	begin
+		state_c<=state_n;
+	end
+end
+
+always@(*)			//控制状态机的转换
+begin
+	case(state_c)
+		IDIE:
+			begin
+				if(flag_15ms)
+				begin
+					state_n<=INIT;
+				end
+				else
+				begin
+					state_n<=state_c
+				end
+			end
+		INIT:
+			begin
+				state_n<=S0;
+			end
+		S0:
+			begin
+				state_n<=S1;
+			end
+		S1:
+			begin
+				state_n<=S2;
+			end
+		S2:
+			begin
+				state_n<=S3;
+			end
+		S3:
+			begin
+				state_n<=ROW1;
+			end
+		ROW1:
+			begin
+				state_n<=WRITE;
+			end
+		WRITE:
+			begin
+				if(char_cnt==7)
+					begin
+						state_n<=ROW2;
+					end
+				else 
+					begin
+						state_n<=state_c;
+					end
+			end
+		ROW2:
+			begin
+				state_n<=STOP;
+			end
+		STOP:
+			begin
+				state_n<=STOP;
+			end
+		default:state_n<=IDIE;
+	endcase
+
+
+end
+
+always@(posedge clk or negedge rst_n)		//控制状态机的动作
+begin
+if(!rst_n)
+	begin
+		data<=8'd0;;
+	end
+else 
+	begin
+		case(state_c)
+			IDIE:begin data<=8'h38;rs<=0;end
+			INIE:begin data<=8'h38;rs<=0;end
+			S0:begin data<=8'h08;rs<=0;end
+			S1:begin data<=8'h01;rs<=0;end
+			S2:begin data<=8'h06;rs<=0;end
+			S3:begin data<=8'h0c;rs<=0;end
+			ROW1:begin data<=8'h80;rs<=0;end
+			WRITE:begin data<=display;rs<=1;end
+			ROW2:begin data<=8'hc0;rs<=0;end
+			STOP:begin data<=8'h38;rs<=0;end
+			default:;
+		endcase
+	end
+end
+
+
+endmodule
+

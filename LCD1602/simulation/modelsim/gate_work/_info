@@ -1,0 +1,76 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dF:/verilog/kecheng_project/LCD1602/simulation/modelsim
+vhard_block
+Z1 !s110 1761799403
+!i10b 1
+!s100 R2BDjN3Ff_0lYWeBJ=`E40
+I<0c@HX5;8n2g]g:m6:Vdb1
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+Z3 w1761799354
+Z4 8lcd_8_1200mv_85c_slow.vo
+Z5 Flcd_8_1200mv_85c_slow.vo
+L0 4473
+Z6 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z7 !s108 1761799403.000000
+Z8 !s107 lcd_8_1200mv_85c_slow.vo|
+Z9 !s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+.|lcd_8_1200mv_85c_slow.vo|
+!i113 1
+Z10 o-vlog01compat -work work
+Z11 !s92 -vlog01compat -work work +incdir+.
+Z12 tCvgOpt 0
+vlcd
+R1
+!i10b 1
+!s100 >kXW:ode2JmjfXP<?d1;b2
+ISlk3^hn9>maUMd5:Y5EfV1
+R2
+R0
+R3
+R4
+R5
+L0 31
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+R11
+R12
+vtb_lcd
+R1
+!i10b 1
+!s100 aIQzcfHVH`1^NYZjPS6n>0
+IRAJ?PK2mcFhTzi1;JGN[=3
+R2
+R0
+w1761799340
+8F:/verilog/kecheng_project/LCD1602/tb_lcd.v
+FF:/verilog/kecheng_project/LCD1602/tb_lcd.v
+L0 3
+R6
+r1
+!s85 0
+31
+R7
+!s107 F:/verilog/kecheng_project/LCD1602/tb_lcd.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+F:/verilog/kecheng_project/LCD1602|F:/verilog/kecheng_project/LCD1602/tb_lcd.v|
+!i113 1
+R10
+!s92 -vlog01compat -work work +incdir+F:/verilog/kecheng_project/LCD1602
+R12
