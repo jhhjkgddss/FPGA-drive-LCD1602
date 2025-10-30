@@ -1,0 +1,2 @@
+# FPGA-drive-LCD1602
+本科小实验，用FPGA驱动LCD1602
